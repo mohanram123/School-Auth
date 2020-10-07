@@ -4,7 +4,11 @@ const path = require('path');
 const dotenv = require('dotenv');
 const router = require('./routes/pages');
 const authRouter = require('./routes/auth');
+const googleRouter = require('./routes/google');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+require('./passport-setup');
 
 dotenv.config({ path: './.env' });
 
@@ -24,10 +28,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(
+  cookieSession({
+    name: 'school-session',
+    keys: ['key1', 'key2'],
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.set('view engine', 'hbs');
 
 app.use('/', router);
 app.use('/auth', authRouter);
+app.use('/google', googleRouter);
 
 db.connect((err) => {
   if (err) {
