@@ -2,7 +2,7 @@
 An authentication system for school management system using nodejs and mysql
 
 ## Things left
-1. HBS files for failed login and successful routes login
+1. Nothing left for now!
 
 ### How to begin
 1. npm i
