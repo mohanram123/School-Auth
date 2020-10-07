@@ -18,13 +18,13 @@ Grouter.get(
 
 Grouter.get('/failed', (req, res) => {
   // render a failed page
-  res.send('Failed to login');
+  res.render('failure');
 });
 
 Grouter.get('/good', isLoggedIn, (req, res) => {
   // render the success page
   // console.log(req.user);
-  res.send(`Welcome mr ${req.user.email}! and ${req.user.displayName}`);
+  res.render('success');
 });
 
 Grouter.get('/logout', (req, res) => {
