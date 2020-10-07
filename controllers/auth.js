@@ -77,6 +77,7 @@ exports.login = async (req, res) => {
           const UserID = result[0].UserID;
 
           const token = jwt.sign({ UserID }, process.env.JWT_SECRET, {
+            algorithm: 'HS256',
             expiresIn: process.env.JWT_EXPIRESIN,
           });
 
@@ -88,9 +89,8 @@ exports.login = async (req, res) => {
             ),
             httpOnly: true,
           };
-
-          res.cookie('jwt', token, cookieOptions);
-          res.status(200).redirect('/');
+          res.cookie('token', token, cookieOptions);
+          res.redirect('/success');
         }
       }
     );
