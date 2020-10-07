@@ -1,6 +1,15 @@
 const passport = require('passport');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
+const mysql = require('mysql');
+
+const db = mysql.createConnection({
+  host: process.env.DB_HOST, //ip address of server
+  user: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  database: process.env.DB,
+});
+
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 passport.serializeUser(function (user, done) {
@@ -29,7 +38,18 @@ passport.use(
 
       //if user exists - return to the done function
       console.log('Profile ' + profile.email + ' ' + profile.displayName);
-      return done(null, profile);
+      db.query(
+        'select LoginName FROM user_table where LoginName = ?',
+        [profile.email],
+        async (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          if (result.length > 0) {
+            return done(err, profile);
+          }
+        }
+      );
     }
   )
 );
