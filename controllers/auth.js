@@ -13,7 +13,18 @@ const db = mysql.createConnection({
 
 exports.register = (req, res) => {
   console.log(req.body);
-  const { id, name, role, email, pass } = req.body;
+  const { id, first_name, last_name, role, email, pass } = req.body;
+  
+  function is_alpha(str) {
+    return /^[a-zA-Z]+$/.test(str);
+  }
+
+  if (!is_alpha(first_name) || !is_alpha(last_name)){
+    return res.render('register', {
+      message: 'First name and Last name can only contain alphabets.',
+    });
+  }
+
   db.query(
     'select LoginName FROM user_table where LoginName = ?',
     [email],
@@ -33,9 +44,10 @@ exports.register = (req, res) => {
         'insert into user_table set ?',
         {
           UserID: id,
-          UserName: name,
+          FirstName: first_name.trim(),
+          LastName: last_name.trim(),
           UserRole: role,
-          LoginName: email,
+          LoginName: email.trim(),
           password: hashedpwd,
           status: false,
         },
@@ -63,6 +75,7 @@ exports.login = async (req, res) => {
         message: 'Please provide an email or password',
       });
     }
+
 
     db.query(
       'select * from user_table where LoginName = ?',
@@ -94,7 +107,8 @@ exports.login = async (req, res) => {
         }
       }
     );
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(err);
   }
 };
