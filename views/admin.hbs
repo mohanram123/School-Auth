@@ -14,19 +14,19 @@
     <nav>
         <h4>School Management System</h4>
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            {{!-- <li><a href="/register">Register</a></li> --}}
+            {{!-- <li><a href="/">Home</a></li> --}}
+            <li><a href="/register">Register</a></li>
+            <li><a href="/logout">Log Out</a></li>
         </ul>
     </nav>
 
     <div class="container mt-4">
         <div class="card">
             <div class="card-header">
-                Login Page
+                Admin Account
             </div>
             <div class="card-body">
-                <form action="/auth/login" method="POST">
+                {{!-- <form action="/auth/login" method="POST">
                     <div class="form-group">
                         <label for="email">Email ID</label>
                         <input type="email" class="form-control" id="email" name="email">
@@ -36,7 +36,10 @@
                         <input type="password" class="form-control" id="pass" name="pass">
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
-                </form>
+                </form> --}}
+                <div>
+                    Welcome.
+                </div>
             </div>
         </div>
 
