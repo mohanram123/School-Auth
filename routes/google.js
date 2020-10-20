@@ -11,7 +11,10 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-Grouter.get('/', passport.authenticate('google', { scope: ['email', 'profile'] }));
+Grouter.get(
+  '/',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
 
 Grouter.get('/failed', (req, res) => {
   // render a failed page
@@ -21,17 +24,8 @@ Grouter.get('/failed', (req, res) => {
 Grouter.get('/good', isLoggedIn, (req, res) => {
   // render the success page
   // console.log(req.user);
-  console.log(req.cookies)
   res.render('success');
 });
-
-Grouter.get('/student', isLoggedIn, (req, res) => {
-  // render the success page
-  // console.log(req.user);
-  console.log(req.cookies)
-  res.render('student');
-});
-
 
 Grouter.get('/logout', (req, res) => {
   req.session = null;
@@ -39,8 +33,10 @@ Grouter.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-Grouter.get('/callback', passport.authenticate('google', {
-    successRedirect: '/google/student',
+Grouter.get(
+  '/callback',
+  passport.authenticate('google', {
+    successRedirect: '/google/good',
     failureRedirect: '/google/failed',
   })
 );

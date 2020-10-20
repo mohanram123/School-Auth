@@ -13,18 +13,7 @@ const db = mysql.createConnection({
 
 exports.register = (req, res) => {
   console.log(req.body);
-  const {first_name, last_name, role, email, pass } = req.body;
-  
-  function is_alpha(str) {
-    return /^[a-zA-Z]+$/.test(str);
-  }
-
-  if (!is_alpha(first_name) || !is_alpha(last_name)){
-    return res.render('register', {
-      message: 'First name and Last name can only contain alphabets.',
-    });
-  }
-
+  const { id, name, role, email, pass } = req.body;
   db.query(
     'select LoginName FROM user_table where LoginName = ?',
     [email],
@@ -43,11 +32,10 @@ exports.register = (req, res) => {
       db.query(
         'insert into user_table set ?',
         {
-          // UserID: id,
-          FirstName: first_name.trim(),
-          LastName: last_name.trim(),
+          UserID: id,
+          UserName: name,
           UserRole: role,
-          LoginName: email.trim(),
+          LoginName: email,
           password: hashedpwd,
           status: false,
         },
@@ -76,7 +64,6 @@ exports.login = async (req, res) => {
       });
     }
 
-
     db.query(
       'select * from user_table where LoginName = ?',
       [email],
@@ -103,20 +90,11 @@ exports.login = async (req, res) => {
             httpOnly: true,
           };
           res.cookie('token', token, cookieOptions);
-          if(result[0].UserRole == 0){
-            res.redirect('/admin');
-          }
-          else if (result[0].UserRole == 1) {
-          res.redirect('/student');
-          }
-          else if (result[0].UserRole == 2) {
-            res.redirect('/teacher');
-          }
+          res.redirect('/success');
         }
       }
     );
-  } 
-  catch (err) {
+  } catch (err) {
     console.log(err);
   }
 };
