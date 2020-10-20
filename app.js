@@ -51,7 +51,6 @@ db.connect((err) => {
     console.log('MYSQL Connected!');
   }
 });
-
 app.listen(5000, () => {
   console.log('Server started on port 5000');
 });
