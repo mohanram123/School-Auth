@@ -5,6 +5,8 @@ dotenv.config({ path: './.env' });
 const router = express.Router();
 
 router.get('/', (req, res) => {
+  console.log("INDEX PAGE: ")
+  console.log(req.cookies)
   res.render('index');
 });
 
@@ -18,6 +20,25 @@ router.get('/login', (req, res) => {
 
 router.get('/success', isAuthorized, (req, res) => {
   res.render('success');
+});
+
+router.get('/admin', isAuthorized, (req, res) => {
+  res.render('admin');
+});
+
+router.get('/student', isAuthorized, (req, res) => {
+  res.render('student');
+});
+
+router.get('/teacher', isAuthorized, (req, res) => {
+  res.render('teacher');
+});
+
+
+router.get('/logout', (req, res) => {
+  res.clearCookie('token'); 
+  console.log(res.cookie)
+  res.redirect('/');
 });
 
 function isAuthorized(req, res, next) {
