@@ -13,7 +13,7 @@ const db = mysql.createConnection({
 
 exports.register = (req, res) => {
   console.log(req.body);
-  const {first_name, last_name, role, email, pass } = req.body;
+  const { id, first_name, last_name, role, email, pass } = req.body;
   
   function is_alpha(str) {
     return /^[a-zA-Z]+$/.test(str);
@@ -43,7 +43,7 @@ exports.register = (req, res) => {
       db.query(
         'insert into user_table set ?',
         {
-          // UserID: id,
+          UserID: id,
           FirstName: first_name.trim(),
           LastName: last_name.trim(),
           UserRole: role,
@@ -103,15 +103,7 @@ exports.login = async (req, res) => {
             httpOnly: true,
           };
           res.cookie('token', token, cookieOptions);
-          if(result[0].UserRole == 0){
-            res.redirect('/admin');
-          }
-          else if (result[0].UserRole == 1) {
-          res.redirect('/student');
-          }
-          else if (result[0].UserRole == 2) {
-            res.redirect('/teacher');
-          }
+          res.redirect('/success');
         }
       }
     );

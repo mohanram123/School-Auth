@@ -22,19 +22,6 @@ router.get('/success', isAuthorized, (req, res) => {
   res.render('success');
 });
 
-router.get('/admin', isAuthorized, (req, res) => {
-  res.render('admin');
-});
-
-router.get('/student', isAuthorized, (req, res) => {
-  res.render('student');
-});
-
-router.get('/teacher', isAuthorized, (req, res) => {
-  res.render('teacher');
-});
-
-
 router.get('/logout', (req, res) => {
   res.clearCookie('token'); 
   console.log(res.cookie)
