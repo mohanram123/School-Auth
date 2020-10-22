@@ -4,6 +4,12 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const router = express.Router();
 
+// fileupload requirements
+path = require('path');
+fs   =require('fs');
+virusCheck = require("../public/assets/virusCheck");
+multerconf = require("../public/assets/multerreq");
+
 router.get('/', (req, res) => {
   console.log("INDEX PAGE: ")
   console.log(req.cookies)
@@ -30,11 +36,68 @@ router.get('/student', isAuthorized, (req, res) => {
   res.render('student');
 });
 
-router.get('/teacher', isAuthorized, (req, res) => {
+router.get('/teacher', (req, res) => {
   res.render('teacher');
 });
 
-
+router.get('/teacher/fileupload', (req, res) => {
+  res.render('fileupload');
+});
+var fileName = new Map();
+router.post("/teacher/fileupload", function(req, res){
+  upload(req, res,async function(err){
+    if(req.file!=undefined)
+    {
+      console.log(req.file.path);
+      hashVal=virusCheck.third(req.file.path);
+      val1 = await virusCheck.first(req.file.path).then(
+      function(result){
+        return result;
+      }
+    );
+    data=await virusCheck.test(req.file.path); 
+    
+    val=await virusCheck.second(hashVal).then(
+      function(result){
+        return result;
+      }
+    );
+    console.log(val[4]);
+  }
+  if(req.file!=undefined){
+    if(val[4]==1){
+      fs.writeFileSync(req.file.path, data  );
+      var changedName=hashVal+path.extname(req.file.originalname).toLowerCase();
+      fileName[req.file.filename]=hashVal+path.extname(req.file.originalname).toLowerCase();
+      fs.renameSync('./public/uploads/'+req.file.filename,'./public/uploads/'+changedName);
+      fs.chmod('./public/uploads/'+changedName, 0o400, () => {
+        console.log('Permissions Changed! Only Read Access!');
+      });
+    }
+    else if(val[4]==0){
+      data=Object();
+      console.log(data);
+    }
+  }
+    if(err){
+      console.log(err);
+      res.render("fileupload", {msg:err})
+    }
+    else{
+      if(req.file==undefined){
+        res.render("fileupload", {msg: "No file selected"});
+      }
+      else if(val[4]!=1){
+        res.render("fileupload",{msg:"Malicious File Caught"});
+      }
+      else{
+        console.log(req.body.nameinput)
+        console.log(req.file)
+        res.render("fileupload", {msg: "File uploaded!",file:`uploads/${req.file.filename}`});
+      }
+    }
+  })
+});
 router.get('/logout', (req, res) => {
   res.clearCookie('token'); 
   console.log(res.cookie)
@@ -55,25 +118,6 @@ function isAuthorized(req, res, next) {
     }
     return res.status(400).end();
   }
-  //Token renewing logic needs some work!
-
-  // const nowUnixSeconds = Math.round(Number(new Date()) / 1000);
-  // if (payload.exp - nowUnixSeconds > 30) {
-  //   return res.status(400).end();
-  // }
-  // const newtoken = jwt.sign({ UserID }, process.env.JWT_SECRET, {
-  //   algorithm: 'HS256',
-  //   expiresIn: process.env.JWT_EXPIRESIN,
-  // });
-
-  // const cookieOptions = {
-  //   expires: new Date(
-  //     Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-  //   ),
-  //   httpOnly: true,
-  // };
-
-  // res.cookie('token', newToken, cookieOptions);
   return next();
 }
 

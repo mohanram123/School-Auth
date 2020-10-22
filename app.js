@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./passport-setup');
-
+var hbs = require('hbs');
 dotenv.config({ path: './.env' });
 
 const app = express();
@@ -39,6 +39,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.set('view engine', 'hbs');
+
+const isEqual = function(a, b, opts) {
+  if (a == b) {
+    return opts.fn(this) 
+  } else { 
+    return opts.inverse(this) 
+  } 
+}
+hbs.registerHelper('ifeq', isEqual);
 
 app.use('/', router);
 app.use('/auth', authRouter);
