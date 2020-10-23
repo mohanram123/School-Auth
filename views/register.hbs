@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.0/purify.min.js"></script>
     <title>Document</title>
 </head>
 
@@ -26,7 +27,7 @@
                 Registration
             </div>
             <div class="card-body">
-                <form action="/auth/register" method="POST">
+                <form action="/auth/register" method="POST" id="loginForm">
                     {{!-- <div class="form-group">
                         <label for="id">ID</label>
                         <input type="number" class="form-control" id="id" name="id" min="1" required>
@@ -57,7 +58,7 @@
                         <label for="pass">Password</label>
                         <input type="password" class="form-control" id="pass" name="pass" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="submit" class="btn btn-primary" >Register</button>
                 </form>
             </div>
         </div>
@@ -65,7 +66,72 @@
         {{#if message }}
         <h4 class="alert alert-danger mt-4">{{message}}</h4>
         {{/if}}
+
+        <div class="alert alert-danger" style="display: none;" id="danger">
+            <strong>Danger!</strong> You just tried to hack this site.
+        </div>
+
     </div>
+
+
+    {{!-- Form wont submit if the input fields contain invalid html or javascript --}}
+    <script>
+        let form=document.querySelector("#loginForm");
+      
+
+        form.onsubmit=()=>{
+            let email=document.querySelector("#email");
+            let password=document.querySelector("#pass");
+            let firstName=document.querySelector("#first_name");
+            let lastName=document.querySelector("#last_name");
+
+            console.log("Old email: ",email.value);
+            old_email=email.value;
+            old_password=password.value;
+            old_firstName=firstName.value
+            old_lastName=lastName.value
+
+            email.value=DOMPurify.sanitize(email.value);
+            password.value=DOMPurify.sanitize(password.value);
+            firstName.value=DOMPurify.sanitize(firstName.value);
+            lastName.value=DOMPurify.sanitize(lastName.value);
+
+            if(old_email!==email.value)
+            {   
+
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your email."
+                return false;
+            }
+
+            if(old_password!==password.value)
+            {
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your password."
+                return false;
+
+            }
+
+            if(old_firstName!==firstName.value)
+            {
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your first name."
+                return false;
+
+            }
+
+            if(old_lastName!==lastName.value)
+            {
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your last name."
+                return false;
+
+            }
+            return true;
+
+        }
+        
+    </script>
 
 
 
