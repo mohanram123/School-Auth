@@ -27,7 +27,7 @@
                 Login Page
             </div>
             <div class="card-body">
-                <form action="/auth/login" method="POST">
+                <form action="/auth/login" method="POST" id="loginForm">
                     <div class="form-group">
                         <label for="email">Email ID</label>
                         <input type="email" class="form-control" id="email" name="email">
@@ -36,7 +36,7 @@
                         <label for="pass">Password</label>
                         <input type="password" class="form-control" id="pass" name="pass">
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary" id="formSubmit">Login</button>
                 </form>
             </div>
         </div>
@@ -44,7 +44,12 @@
         {{#if message }}
         <h4 class="alert alert-danger mt-4">{{message}}</h4>
         {{/if}}
+
+        <div class="alert alert-danger" style="display: none;" id="danger">
+            <strong>Danger!</strong> You just tried to hack this site.
+        </div>
     </div>
+
 
     {{!-- Form wont submit if the input fields contain invalid html or javascript --}}
     <script>
@@ -78,11 +83,10 @@
     </script>
 
 
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
-
-    
 </body>
 
 </html>
