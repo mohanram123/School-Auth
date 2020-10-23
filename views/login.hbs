@@ -8,6 +8,7 @@
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
     <title>Document</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.0/purify.min.js"></script>
 </head>
 
 <body>
@@ -45,11 +46,43 @@
         {{/if}}
     </div>
 
+    {{!-- Form wont submit if the input fields contain invalid html or javascript --}}
+    <script>
+        let form=document.querySelector("#loginForm");
+
+        form.onsubmit=()=>{
+             let email=document.querySelector("#email");
+            let password=document.querySelector("#pass");
+            old_email=email.value;
+            old_password=password.value;
+            email.value=DOMPurify.sanitize(email.value);
+            password.value=DOMPurify.sanitize(password.value);
+
+              if(old_email!==email.value)
+            {   
+
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your email."
+                return false;
+            }
+            if(old_password!==password.value)
+            {
+                document.querySelector("#danger").style.display="block";
+                document.querySelector("#danger").innerHTML="<strong>Danger!</strong> You just tried to add invalid html. Change your password."
+                return false;
+
+            }
+            return true;
+        }
+        
+    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
+
+    
 </body>
 
 </html>
