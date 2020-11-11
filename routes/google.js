@@ -20,14 +20,12 @@ Grouter.get('/failed', (req, res) => {
 
 Grouter.get('/good', isLoggedIn, (req, res) => {
   // render the success page
-  // console.log(req.user);
   console.log(req.cookies)
   res.render('success');
 });
 
 Grouter.get('/student', isLoggedIn, (req, res) => {
   // render the success page
-  // console.log(req.user);
   console.log(req.cookies)
   res.render('student');
 });

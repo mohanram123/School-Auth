@@ -43,7 +43,6 @@ exports.register = (req, res) => {
       db.query(
         'insert into user_table set ?',
         {
-          // UserID: id,
           FirstName: first_name.trim(),
           LastName: last_name.trim(),
           UserRole: role,
@@ -82,7 +81,7 @@ exports.login = async (req, res) => {
       [email],
       async (err, result) => {
         console.log(result);
-        if (!result || !(await bcrypt.compare(pass, result[0].password))) {
+        if (!result || result.length == 0 || !(await bcrypt.compare(pass, result[0].password))) {
           res.status(401).render('login', {
             message: 'Email or password is incorrect',
           });
@@ -107,10 +106,10 @@ exports.login = async (req, res) => {
             res.redirect('/admin');
           }
           else if (result[0].UserRole == 1) {
-          res.redirect('/student');
+            res.redirect('/teacher');
           }
           else if (result[0].UserRole == 2) {
-            res.redirect('/teacher');
+          res.redirect('/student');
           }
         }
       }

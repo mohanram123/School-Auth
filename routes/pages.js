@@ -28,6 +28,10 @@ router.get('/success', isAuthorized, (req, res) => {
   res.render('success');
 });
 
+router.get('/edit', (req, res) => {
+  res.render('edit');
+});
+
 router.get('/admin', isAuthorized, (req, res) => {
   res.render('admin');
 });

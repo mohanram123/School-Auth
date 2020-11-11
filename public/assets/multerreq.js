@@ -18,7 +18,6 @@ function checkFileType(file, cb){
   if(mimetype && extname){
     return cb(null,true);
   } else {
-    // cb(`${file.mimetype}`+'File Type is not Allowed!');
     cb('File Type is not Accepted!');
   }
 }

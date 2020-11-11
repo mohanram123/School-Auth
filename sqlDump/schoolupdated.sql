@@ -234,7 +234,7 @@ DROP TABLE IF EXISTS `user_table`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_table` (
-  `UserID` int(30) NOT NULL,
+  `UserID` int(30) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(100) NOT NULL,
   `LastName` varchar(100) NOT NULL,
   `UserRole` int(4) NOT NULL,
@@ -270,3 +270,7 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-09-23 21:20:55
+insert into user_role_master values(0,"Admin",0);
+insert into user_role_master values(1,"Teacher",0);
+insert into user_role_master values(2,"Student",0);
+insert into user_table values(1,"Admin","User",0,'admin@admin.com',"$2a$08$pIThE/feXdjl6XjWcqtUJ.KX.li6haMcYnby6/y6g2gvtVkYl8D22",0);
