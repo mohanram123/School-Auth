@@ -48,6 +48,9 @@ passport.use(
           if (result.length > 0) {
             return done(err, profile);
           }
+          else{
+            return done(null);
+          }
         }
       );
     }

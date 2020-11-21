@@ -40,9 +40,9 @@ app.use(passport.session());
 
 app.set('view engine', 'hbs');
 
-app.use('/', router);
-app.use('/auth', authRouter);
-app.use('/google', googleRouter);
+app.use('/', router); // Index page
+app.use('/auth', authRouter); // Normal registration and authentication
+app.use('/google', googleRouter); // Google oauth authentication
 
 db.connect((err) => {
   if (err) {

@@ -16,9 +16,9 @@ Grouter.get(
   passport.authenticate('google', { scope: ['email', 'profile'] })
 );
 
-Grouter.get('/failed', (req, res) => {
+Grouter.get('/failed',(req, res) => {
   // render a failed page
-  res.render('failure');
+  res.redirect('/');
 });
 
 Grouter.get('/good', isLoggedIn, (req, res) => {
