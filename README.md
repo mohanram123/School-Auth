@@ -11,7 +11,7 @@ An authentication system for school management system using nodejs and mysql
   3. Use the command "mysql -u root/<db_username> -p school_system/<db_name> < sqlDump/schoolupdated.sql".
   
   #### Node & npm
-  1. Install [nodejs and npm][https://nodejs.org/dist/v14.15.1/node-v14.15.1-x64.msi]
+  1. Install [nodejs and npm](https://nodejs.org/dist/v14.15.1/node-v14.15.1-x64.msi)
   
   #### This repo
   1. Clone this repository using "git clone https://www.github.com/mohanram123/School-Auth.git"
